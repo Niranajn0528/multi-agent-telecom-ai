@@ -1,0 +1,6 @@
+Incident ID,Timestamp,Network Element,Alarm,Severity,Location,Status
+INC-1001,2026-07-22 09:10:12,UPF,PFCP Association Failure,Critical,Bangalore,Open
+INC-1002,2026-07-22 09:18:42,SMF,N4 Timeout,High,Hyderabad,Open
+INC-1003,2026-07-22 09:26:35,AMF,Registration Reject,Medium,Chennai,Open
+INC-1004,2026-07-22 09:40:11,gNB,Radio Link Failure,Critical,Pune,Open
+INC-1005,2026-07-22 09:52:19,UDM,Subscriber Lookup Failure,Low,Mumbai,Open

@@ -1,0 +1,25 @@
+{
+  "incident_id": "INC-1001",
+  "log_analysis": {
+    "network_element": "UPF",
+    "issue_type": "PFCP Association Failure"
+  },
+  "rca": {
+    "root_cause": "PFCP heartbeat timeout between SMF and UPF."
+  },
+  "trend_analysis": {
+    "pattern": "Repeated PFCP failures observed in Bangalore region."
+  },
+  "escalation": {
+    "severity": "Critical",
+    "priority": "P1",
+    "assignment_team": "Core Network Team"
+  },
+  "qa": {
+    "validation": "Passed",
+    "confidence": "98%"
+  },
+  "report": {
+    "summary": "Critical UPF issue requiring immediate escalation."
+  }
+}
