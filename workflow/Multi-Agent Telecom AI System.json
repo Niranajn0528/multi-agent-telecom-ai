@@ -1,0 +1,619 @@
+{
+  "name": "Multi-Agent Telecom AI System",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -656,
+        0
+      ],
+      "id": "f2d05d53-1267-4f0b-8296-7a2be6483076",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b9f05b02-bf39-43b9-a2cb-58568ad501ea",
+              "name": "incident",
+              "value": "5G SA ping failure observed. Multiple users impacted. UPF restart detected.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -448,
+        0
+      ],
+      "id": "13928a04-4ede-46e2-bbee-02581fa1a164",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{$json.incident}}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are a Telecom Log Analysis AI Agent.  Analyze the telecom incident.  Identify: - affected network functions - signaling failures - protocol-level issues - possible packet flow problems - service impact  Be concise and technical."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -240,
+        0
+      ],
+      "id": "f54360f9-4de1-46a5-b342-aa2bbc9a0110",
+      "name": "Log Analysis Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        208
+      ],
+      "id": "c04fafe4-0d49-4222-817d-f74a75d3c700",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "PlAjJlgiud39IeoJ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{$json.text}}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are a Telecom Root Cause Analysis AI Agent.  Analyze previous agent findings.  Determine: - probable root cause - failure domain - likely trigger event - impacted interfaces - corrective recommendations"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        112,
+        0
+      ],
+      "id": "7c34c2ab-b0d7-4ed9-85d8-2cdf96eb6488",
+      "name": "RCA Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        48,
+        208
+      ],
+      "id": "30c58a7b-eaf0-45d1-a2ff-7f109b258058",
+      "name": "Groq Chat Model1",
+      "credentials": {
+        "groqApi": {
+          "id": "PlAjJlgiud39IeoJ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        400,
+        208
+      ],
+      "id": "32e1f325-ebc0-45bf-8861-d53c8113ad44",
+      "name": "Groq Chat Model2",
+      "credentials": {
+        "groqApi": {
+          "id": "PlAjJlgiud39IeoJ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{$json.text}}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are a Telecom Trend Analysis AI Agent.  Identify: - recurring failures - risky network elements - outage patterns - repeated crashes - operational trends"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        464,
+        0
+      ],
+      "id": "c75051c1-faeb-49a6-bc41-dbb6f52c3214",
+      "name": " Trend Analysis Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{$json.text}}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are a Telecom Escalation AI Agent.\n\nAnalyze the telecom RCA findings.\n\nReturn ONLY valid JSON.\n\nFormat:\n{\n  \"severity\": \"Low/Medium/High/Critical\",\n  \"business_impact\": \"\",\n  \"escalation_required\": true,\n  \"recommended_action\": \"\"\n}"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        784,
+        0
+      ],
+      "id": "f15a93d4-65bc-4606-9dae-276b29ff4212",
+      "name": " Escalation Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        752,
+        208
+      ],
+      "id": "71fa0802-91ba-47e9-860f-03866b8248e9",
+      "name": "Groq Chat Model3",
+      "credentials": {
+        "groqApi": {
+          "id": "PlAjJlgiud39IeoJ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9e2004d0-0849-4542-81a6-d55122f0adb3",
+              "leftValue": "={{$json.severity}}",
+              "rightValue": "Crtical",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1168,
+        0
+      ],
+      "id": "35de3779-6ebf-4b1c-9a0e-fa03be23341e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "niranjan.arathi28@gmail.com",
+        "subject": "🚨 Critical Telecom Incident Detected",
+        "message": "={{$json.text}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1376,
+        -96
+      ],
+      "id": "f1a1610e-05cf-416d-acd7-1e8f3de762d8",
+      "name": "Send a message",
+      "webhookId": "08001322-6dd5-4790-93a7-f71db42cc652",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "6QWqgT6JJuGCiocc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        352
+      ],
+      "id": "30c60a3e-dfdd-442a-90c7-a7f11da632f0",
+      "name": "Groq Chat Model4",
+      "credentials": {
+        "groqApi": {
+          "id": "PlAjJlgiud39IeoJ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{$json.text}}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are a Telecom QA AI Agent.  Validate: - technical correctness - escalation consistency - RCA quality - recommendation quality  Mention if anything important is missing."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1280,
+        144
+      ],
+      "id": "2f24a479-81d5-40a3-8473-bee8bd6b2b87",
+      "name": "QA Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        352
+      ],
+      "id": "dfdf1f86-7724-4744-9688-aaa6b45878e9",
+      "name": "Groq Chat Model5",
+      "credentials": {
+        "groqApi": {
+          "id": "PlAjJlgiud39IeoJ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{$json.text}}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are a Telecom Incident Reporting AI.\n\nGenerate a concise structured telecom incident report.\n\nReturn ONLY valid JSON.\n\n{\n  \"incident_summary\": \"\",\n  \"root_cause\": \"\",\n  \"severity\": \"\",\n  \"recommended_actions\": [],\n  \"preventive_actions\": [],\n  \"escalation_required\": false\n}\n\nIncident Details:\n{{ $json.text }}"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1632,
+        144
+      ],
+      "id": "85cdb603-043c-4df0-920e-6ab94ebbe446",
+      "name": "Reporting Agent"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "17da2a64-afbc-4724-bf31-2726d4394d89",
+              "name": "incident_summary",
+              "value": "={{ JSON.parse($json.text.replace(/```json|```/g, '').trim()).incident_summary }}",
+              "type": "string"
+            },
+            {
+              "id": "2e0e0f68-8a7b-4440-b71c-636070806e8c",
+              "name": "root_cause",
+              "value": "={{ JSON.parse($json.text.replace(/```json|```/g, '').trim()).root_cause }}",
+              "type": "string"
+            },
+            {
+              "id": "45e1aa36-2576-404f-9db3-99ac7101c828",
+              "name": "severity",
+              "value": "={{ JSON.parse($json.text.replace(/```json|```/g, '').trim()).severity }}",
+              "type": "string"
+            },
+            {
+              "id": "abb41c8a-8410-42d1-b882-e63543671b14",
+              "name": "recommended_actions",
+              "value": "={{ JSON.parse($json.text.replace(/```json|```/g, '').trim()).recommended_actions.join(\", \") }}",
+              "type": "string"
+            },
+            {
+              "id": "4fe02d24-dafc-4eb5-a098-5568b196fff1",
+              "name": "preventive_actions",
+              "value": "={{ JSON.parse($json.text.replace(/```json|```/g, '').trim()).preventive_actions.join(\", \") }}",
+              "type": "string"
+            },
+            {
+              "id": "94c02c92-6113-4bb8-8d25-8fded39091f9",
+              "name": "escalation_required",
+              "value": "={{ JSON.parse($json.text.replace(/```json|```/g, '').trim()).escalation_required }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2000,
+        384
+      ],
+      "id": "fcaa1885-c7b7-4be4-9b39-f590af203622",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "sendTo": "niranjan.arathi28@gmail.com",
+        "subject": "=Telecom Incident Report - {{$json.severity}}",
+        "message": "=Incident Summary:\n{{$json.incident_summary}}\n\nRoot Cause:\n{{$json.root_cause}}\n\nSeverity:\n{{$json.severity}}\n\nRecommended Actions:\n{{$json.recommended_actions}}\n\nPreventive Actions:\n{{$json.preventive_actions}}\n\nEscalation Required:\n{{$json.escalation_required}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2208,
+        384
+      ],
+      "id": "000af170-c6fe-4bf3-87f1-6c6ffe585e4a",
+      "name": "Send a message2",
+      "webhookId": "45757b02-ab62-44dc-961a-1658ab42e3ce",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "6QWqgT6JJuGCiocc",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Log Analysis Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Log Analysis Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Analysis Agent": {
+      "main": [
+        [
+          {
+            "node": "RCA Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "RCA Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RCA Agent": {
+      "main": [
+        [
+          {
+            "node": " Trend Analysis Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": " Trend Analysis Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    " Trend Analysis Agent": {
+      "main": [
+        [
+          {
+            "node": " Escalation Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": " Escalation Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    " Escalation Agent": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "QA Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "QA Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QA Agent": {
+      "main": [
+        [
+          {
+            "node": "Reporting Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reporting Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reporting Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d1293f0e-b96d-4ce8-9291-353943bfaf49",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fadcc29a1ef0d6c91da020448df2bbe59980d81b38e29237657fe57d15485c80"
+  },
+  "id": "OWyUnNYt9l2oZSKj",
+  "tags": []
+}
